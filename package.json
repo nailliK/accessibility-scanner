@@ -21,7 +21,7 @@
 		"url": "^0.11.0"
 	},
 	"scripts": {
-		"start": "index.js"
+		"start": "node index.js"
 	},
 	"main": "index.js",
 	"type": "module"
