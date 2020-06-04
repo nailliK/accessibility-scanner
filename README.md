@@ -8,4 +8,4 @@
 5. View your scan results in `/build/index.html`
 
 Caveat:
-If you're running Node >14.0, you'll need to add the `--experimental-modules` flag when executing node.
+If you're running Node <14.0, you'll need to add the `--experimental-modules` flag when executing node.
