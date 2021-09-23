@@ -1,0 +1,103 @@
+<html>
+<head>
+  <title>Accessibility Scanner | Scan Results</title>
+</head>
+<style>
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        font-family: sans-serif;
+    }
+
+    body {
+        padding: 1.5rem;
+    }
+
+    details {
+        border: solid 1px #000000;
+        border-radius: 0.25rem;
+        padding: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    summary {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        font-weight: 700;
+    }
+
+    dl {
+        margin: 0;
+    }
+
+    dt {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        font-weight: 700;
+    }
+
+    dd {
+        margin: 0;
+    }
+
+    ul, ol {
+        margin: 0;
+        padding: 0 0 0 1.5rem;
+    }
+
+</style>
+<body>
+<h1>Scan Results</h1>
+
+{{#scans}}
+<details>
+  <summary>{{url}}</summary>
+  <ol>
+    {{#results.violations}}
+    <li>
+      <dl>
+        <dt>Name</dt>
+        <dd>{{name}}</dd>
+        <dt>Description</dt>
+        <dd>{{description}}</dd>
+        <dt>Tags</dt>
+        <dd>
+          <ul>
+            {{#tags}}
+            <li>{{this}}</li>
+            {{/tags}}
+          </ul>
+        </dd>
+        <dt>Nodes</dt>
+        <dd>
+          <ul>
+            {{#nodes}}
+            <li>
+              <dl>
+                <dt>Target</dt>
+                <dd>{{target}}</dd>
+                <dt>HTML</dt>
+                <dd>{{html}}</dd>
+              </dl>
+            </li>
+            {{/nodes}}
+          </ul>
+        </dd>
+      </dl>
+    </li>
+    {{/results.violations}}
+  </ol>
+
+</details>
+{{/scans}}
+</body>
+</html>
