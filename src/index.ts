@@ -89,12 +89,12 @@ const init = async (): Promise<void> => {
             buildOutput();
             messageLogger.logSuccess(`Scan Complete!`);
             await open("./output/scan-results.html");
-        } catch (error) {
+        } catch (error: any) {
             messageLogger.logFailure(error);
 
         }
 
-    } catch (error) {
+    } catch (error: any) {
         messageLogger.logFailure(error);
     } finally {
         process.exit();
