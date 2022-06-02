@@ -30,7 +30,7 @@ class AccessibilityScanner {
     constructor() {
     }
 
-    public scan = (): Promise<boolean> => {
+    public scan = async (): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
             if (typeof this.page !== "undefined") {
                 this.scans = await this.database.read("scans") || [];
@@ -53,12 +53,12 @@ class AccessibilityScanner {
                 });
 
                 if (typeof currentScan !== "undefined") {
-                    let scanURL: string = `${currentScan.url.protocol}//${currentScan.url.hostname}${currentScan.url.pathname}`;
+                    const scanURL: string = `${currentScan.url.protocol}//${currentScan.url.hostname}${currentScan.url.pathname}`;
                     console.log(`Scanning ${scanURL}`);
 
                     await this.page.setBypassCSP(true);
                     await this.page.goto(scanURL, {
-                        waitUntil: "load",
+                        waitUntil: "networkidle0",
                         timeout: 0
                     });
 
@@ -76,14 +76,17 @@ class AccessibilityScanner {
                             currentScan.results = {violations: []};
                         }
 
-                        console.log(v)
+                        console.log(v);
 
                         currentScan?.results.violations.push({
                             name: v.id,
                             description: v.help,
                             tags: v.tags,
                             nodes: v.nodes.map(n => {
-                                return {target: n.target, html: n.html}
+                                return {
+                                    target: n.target,
+                                    html: n.html
+                                };
                             })
                         });
                     });
@@ -128,13 +131,12 @@ class AccessibilityScanner {
         $("a")
             .each((i, elem) => {
                 // Disregard anchors without HREF attributes
-                if ($(elem)
-                    .attr("href") !== "undefined") {
-                    const newHREF = new URL(<string>$(elem)
+                if (typeof $(elem).attr("href") !== "undefined") {
+                    const newHREF: URL = new URL(<string>$(elem)
                         .attr("href"), `${this.baseURL?.protocol}//${this.baseURL?.hostname}`);
 
                     // Ensure new HREF has the same hostname
-                    if (newHREF.hostname === this.baseURL?.hostname) {
+                    if (newHREF.hostname === this.baseURL?.hostname && newHREF.pathname.indexOf(".pdf") < 0) {
 
                         // Check for existing scan with the same pathname
                         const existingScan = this.scans.find((s) => {
@@ -176,3 +178,4 @@ class AccessibilityScanner {
 }
 
 export default AccessibilityScanner;
+

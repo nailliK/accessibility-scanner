@@ -1,7 +1,7 @@
 import MutationObject from "./MutationObject";
 
 interface JsonDatabaseOptions {
-	mutations?: Array<MutationObject>
+    mutations?: Array<MutationObject>;
 }
 
 export default JsonDatabaseOptions;

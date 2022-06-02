@@ -5,7 +5,7 @@ import {Interface} from "readline";
 import chalk from "chalk";
 import axios, {AxiosResponse} from "axios";
 import MessageLogger from "./classes/MessageLogger";
-import Handlebars from "handlebars"
+import Handlebars from "handlebars";
 import {readFileSync, writeFileSync} from "fs";
 import open from "open";
 
@@ -102,12 +102,12 @@ const init = async (): Promise<void> => {
 };
 
 const buildOutput = (): void => {
-    const source = readFileSync("./src/templates/scan-results.html", "utf-8")
+    const source = readFileSync("./src/templates/scan-results.html", "utf-8");
     const template = Handlebars.compile(source);
     const context = {scans: accessibilityScanner.scans};
     const html = template(context);
     writeFileSync("./output/scan-results.html", html);
-}
+};
 
 clear();
 printTitle();
