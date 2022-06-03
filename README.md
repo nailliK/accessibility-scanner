@@ -9,4 +9,4 @@
 
 Caveat:
 If you're running Node <14.0, you'll need to add the `--experimental-modules`
-flag when executing node. {"mode":"full","isActive":false}
+flag when executing node.
