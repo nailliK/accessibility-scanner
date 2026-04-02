@@ -6,7 +6,7 @@ import chalk from "chalk";
 import axios, {AxiosResponse} from "axios";
 import MessageLogger from "./classes/MessageLogger";
 import Handlebars from "handlebars";
-import {readFileSync, writeFileSync} from "fs";
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
 import open from "open";
 
 // Message logger
@@ -23,12 +23,12 @@ const rl: Interface = readline.createInterface({
 
 // Output fancy title
 const printTitle = (): void => {
-    console.log(chalk`
+    console.log(`
 +------------------------------------------------------------------------------+
 |                                                                              |
-|                            {green Accessibility Scanner}                             |
+|                            ${chalk.green("Accessibility Scanner")}                             |
 |                                                                              |
-+-------------------------------==[ {yellow v.0.0.2} ]==--------------------------------+
++-------------------------------==[ ${chalk.yellow("v.0.0.2")} ]==--------------------------------+
 `);
 };
 
@@ -106,6 +106,9 @@ const buildOutput = (): void => {
     const template = Handlebars.compile(source);
     const context = {scans: accessibilityScanner.scans};
     const html = template(context);
+    if (!existsSync("./output")) {
+        mkdirSync("./output");
+    }
     writeFileSync("./output/scan-results.html", html);
 };
 

@@ -1,4 +1,4 @@
-import {TagValue} from "axe-core";
+import {TagValue, UnlabelledFrameSelector} from "axe-core";
 
 interface ScanResult {
     id: string,
@@ -10,7 +10,7 @@ interface ScanResult {
             description: string, // axe violation help
             tags: Array<TagValue>;
             nodes: Array<{
-                target: Array<string>,
+                target: UnlabelledFrameSelector,
                 html: string
             }>;
         }>

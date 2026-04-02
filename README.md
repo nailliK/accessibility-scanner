@@ -1,12 +1,14 @@
 # Accessibility Scanner
 
-## Instructions to run
+A CLI tool that spiders through your domain and reports accessibility issues on each page using [Playwright](https://playwright.dev/) and [axe-core](https://github.com/dequelabs/axe-core).
 
-1. Install node packages via NPM or Yarn
-2. run `node | yarn start`
-3. When requested, input the full URL for the website that you'd like to scan
-4. View your scan results in `output/scan-results.html`
+## Setup
 
-Caveat:
-If you're running Node <14.0, you'll need to add the `--experimental-modules`
-flag when executing node.
+1. Install dependencies: `npm install`
+2. Install Playwright's Chromium browser: `npx playwright install chromium`
+
+## Usage
+
+1. Run `npm start`
+2. When prompted, enter the full URL for the website you'd like to scan
+3. View your scan results in `output/scan-results.html`

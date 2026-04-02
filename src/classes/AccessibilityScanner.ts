@@ -1,31 +1,26 @@
-import puppeteer, {Browser, Page} from "puppeteer";
+import {chromium, Browser, BrowserContext, Page} from "playwright";
 import MessageLogger from "./MessageLogger";
 import ScanResult from "../interfaces/ScanResult";
 import JsonDatabase from "../classes/JsonDatabase";
-import {AxePuppeteer} from "@axe-core/puppeteer";
-import {AxeResults, RunOptions} from "axe-core";
+import {AxeBuilder} from "@axe-core/playwright";
+import {AxeResults} from "axe-core";
 import {v4 as uuidv4} from "uuid";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import LooseObject from "@/interfaces/LooseObject";
 
 class AccessibilityScanner {
     public scans: Array<ScanResult> = [];
     private browser: Browser | undefined;
+    private context: BrowserContext | undefined;
     private page: Page | undefined;
     private baseURL: URL | undefined;
     private messageLogger: MessageLogger = new MessageLogger();
-    private axeOptions: RunOptions = {
-        reporter: "v2",
-        runOnly: {
-            type: "tag",
-            values: [
-                "wcag2a",
-                "wcag2aa",
-                "wcag21aa",
-                "section508"
-            ]
-        }
-    };
+    private axeTags: string[] = [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21aa",
+        "section508"
+    ];
 
     constructor() {
     }
@@ -56,9 +51,8 @@ class AccessibilityScanner {
                     const scanURL: string = `${currentScan.url.protocol}//${currentScan.url.hostname}${currentScan.url.pathname}`;
                     console.log(`Scanning ${scanURL}`);
 
-                    await this.page.setBypassCSP(true);
                     await this.page.goto(scanURL, {
-                        waitUntil: "networkidle0",
+                        waitUntil: "networkidle",
                         timeout: 0
                     });
 
@@ -67,8 +61,8 @@ class AccessibilityScanner {
                     this.parseLinks(html);
 
                     // Analyze page results
-                    const scanResults: AxeResults = await new AxePuppeteer(this.page)
-                        .options(this.axeOptions)
+                    const scanResults: AxeResults = await new AxeBuilder({page: this.page})
+                        .withTags(this.axeTags)
                         .analyze();
 
                     scanResults.violations.forEach((v) => {
@@ -109,11 +103,12 @@ class AccessibilityScanner {
         return new Promise(async (resolve, reject) => {
             if (typeof url !== "undefined") {
                 this.baseURL = url;
-                // Initialize Puppeteer
+                // Initialize Playwright
                 try {
-                    console.log("Creating browser instance from Puppeteer.");
-                    this.browser = await puppeteer.launch();
-                    this.page = await this.browser.newPage();
+                    console.log("Creating browser instance from Playwright.");
+                    this.browser = await chromium.launch();
+                    this.context = await this.browser.newContext({bypassCSP: true});
+                    this.page = await this.context.newPage();
                     this.messageLogger.logSuccess(`${url} Browser instance created.`);
                 } catch (err) {
                     reject("Could not create browser instance.");
