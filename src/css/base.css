@@ -1,0 +1,15 @@
+@import "./reset.css";
+@import "./table.css";
+@import "./list.css";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+@page {
+    size: portrait;
+    margin: 0.5in;
+}

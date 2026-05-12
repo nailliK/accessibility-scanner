@@ -4,3 +4,7 @@ node_modules
 data/*
 output/*
 build/*
+service-account.json
+token.json
+credentials.json
+.env

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "ESNext",
     "lib": [
       "ES2022",
       "DOM",
@@ -10,12 +10,10 @@
     "rootDir": "./src",
     "strict": true,
     "moduleResolution": "bundler",
-    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "#/*": ["./src/*"]
     },
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
